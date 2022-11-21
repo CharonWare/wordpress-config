@@ -1,9 +1,19 @@
 ---
 - name: Configure Docker
   hosts: dev
-    
+  vars_files:
+    - secrets.yml
+
+  handlers:
+    - name: Restart Dockerd
+      become: true
+      service: 
+        name: docker
+        state: restarted
+
   tasks:
     - name: Download the Docker files
+    # Due to the target machine being a raspberry pi we will let Docker handle the install
       get_url:
         url: https://get.docker.com
         dest: /home/{{ ansible_user }}/get-docker.sh
@@ -13,3 +23,16 @@
       script: /home/{{ ansible_user }}/get-docker.sh
       args:
         creates: /usr/bin/docker
+      notify: Start Dockerd
+
+    - name: Start Dockerd
+      become: true
+      service: 
+        name: docker
+        state: started
+    
+    - name: Log into DockerHub
+      community.docker.docker_login:
+        username: "{{ docker_login }}"
+        password: "{{ docker_access_token }}"
+...
