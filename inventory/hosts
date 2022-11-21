@@ -1,0 +1,7 @@
+[dev]
+pi
+
+[dev:vars]
+ansible_user = pi
+ansible_private_key_file = /home/conor/.ssh/id_rsa
+

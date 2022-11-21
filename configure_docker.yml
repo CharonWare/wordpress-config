@@ -1,0 +1,15 @@
+---
+- name: Configure Docker
+  hosts: dev
+    
+  tasks:
+    - name: Download the Docker files
+      get_url:
+        url: https://get.docker.com
+        dest: /home/{{ ansible_user }}/get-docker.sh
+        mode: 0550
+
+    - name: Install Docker
+      script: /home/{{ ansible_user }}/get-docker.sh
+      args:
+        creates: /usr/bin/docker
