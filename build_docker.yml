@@ -1,0 +1,10 @@
+    - name: Build Mariadb
+      community.docker.docker_image:
+        build:
+          path: "{{ mariadb_dir }}"
+        name: mariadb_staging
+        state: present
+        source: build
+
+    - name: Run MariaDB
+      shell: docker run  --hostname mariadb --name mariadb_staging --detach mariadb_staging

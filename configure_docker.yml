@@ -50,4 +50,7 @@
         src: templates/mariadb_dockerfile.j2
         dest: "{{ mariadb_dir }}/Dockerfile"
         mode: '0755'
+
+    - name: Run MariaDB
+      shell: docker start mariadb_staging
 ...
