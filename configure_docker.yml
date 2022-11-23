@@ -1,6 +1,9 @@
 ---
 - name: Configure Docker
   hosts: dev
+  vars:
+    mariadb_dir: "/home/{{ ansible_user }}/mariadb"
+    mariadb_vol: "{{ mariadb_dir }}/database"
   vars_files:
     - secrets.yml
 
@@ -38,7 +41,13 @@
 
     - name: Create directory for mariadb volume
       file:
-        path: /home/{{ ansible_user }}/mariadb/database
+        path: "{{ mariadb_vol }}"
         state: directory
+        mode: '0755'
+
+    - name: Copy Dockerfile to host
+      template:
+        src: templates/mariadb_dockerfile.j2
+        dest: "{{ mariadb_dir }}/Dockerfile"
         mode: '0755'
 ...
