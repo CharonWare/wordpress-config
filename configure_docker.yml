@@ -45,7 +45,7 @@
         state: directory
         mode: '0755'
 
-    - name: Copy Dockerfile to host
+    - name: Copy MariaDB Dockerfile to host
       template:
         src: templates/mariadb_dockerfile.j2
         dest: "{{ mariadb_dir }}/Dockerfile"
@@ -53,4 +53,16 @@
 
     - name: Run MariaDB
       shell: docker start mariadb_staging
+
+    - name: Create directory for Wordpress
+      file:
+        path: "{{ wordpress_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy Wordpress Dockerfile to host
+      template:
+        src: templates/wordpress_dockerfile.j2
+        dest: "{{ wordpress_dir }}/Dockerfile"
+        mode: '0755'
 ...
