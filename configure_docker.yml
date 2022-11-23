@@ -35,4 +35,10 @@
       community.docker.docker_login:
         username: "{{ docker_login }}"
         password: "{{ docker_access_token }}"
+
+    - name: Create directory for mariadb volume
+      file:
+        path: /home/{{ ansible_user }}/mariadb/database
+        state: directory
+        mode: '0755'
 ...
