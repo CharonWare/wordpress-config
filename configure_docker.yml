@@ -4,6 +4,7 @@
   vars:
     mariadb_dir: "/home/{{ ansible_user }}/mariadb"
     mariadb_vol: "{{ mariadb_dir }}/database"
+    wordpress_dir: "/home/{{ ansible_user }}/wordpress"
   vars_files:
     - secrets.yml
 
@@ -51,7 +52,7 @@
         dest: "{{ mariadb_dir }}/Dockerfile"
         mode: '0755'
 
-    - name: Run MariaDB
+    - name: Start MariaDB
       shell: docker start mariadb_staging
 
     - name: Create directory for Wordpress
@@ -65,4 +66,18 @@
         src: templates/wordpress_dockerfile.j2
         dest: "{{ wordpress_dir }}/Dockerfile"
         mode: '0755'
+
+#    - name: Start Wordpress
+#      shell: docker start wordpress_staging
+
+    - name: Build Wordpress
+      community.docker.docker_image:
+        build:
+          path: "{{ wordpress_dir }}"
+        name: wordpress_staging
+        state: present
+        source: build
+
+    - name: Run Wordpress
+      shell: docker run  --hostname wordpress --name wordpress_staging -P --detach wordpress_staging
 ...
