@@ -1,5 +1,5 @@
 ---
-- name: Build Docker containers
+- name: Build MariaDB on Docker
   hosts: dev
   vars:
     mariadb_dir: "/home/{{ ansible_user }}/mariadb"

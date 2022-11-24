@@ -1,5 +1,5 @@
 ---
-- name: Build Docker containers
+- name: Build Wordpress on Docker
   hosts: dev
   vars:
     wordpress_dir: "/home/{{ ansible_user }}/wordpress"

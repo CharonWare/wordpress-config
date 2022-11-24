@@ -1,0 +1,18 @@
+---
+- name: Tear down Docker containers
+  hosts: dev
+  vars:
+    db: mariad_staging
+    web: wordpress_staging
+
+  tasks:
+    - name: Remove wordpress
+      community.docker.docker_image:
+        state: absent
+        name: "{{ web }}"
+
+    - name: Remove mariadb
+      community.docker.docker_image:
+        state: absent
+        name: "{{ db }}"
+...
