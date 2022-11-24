@@ -29,5 +29,5 @@
         source: build
 
     - name: Run MariaDB
-      shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 --detach mariadb_staging
+      shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol}}:/var/lib/mysql --detach mariadb_staging
 ...
