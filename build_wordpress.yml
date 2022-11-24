@@ -1,0 +1,28 @@
+---
+- name: Build Docker containers
+  hosts: dev
+  vars:
+    mariadb_dir: "/home/{{ ansible_user }}/mariadb"
+    mariadb_vol: "{{ mariadb_dir }}/database"
+    wordpress_dir: "/home/{{ ansible_user }}/wordpress"
+  vars_files:
+    - secrets.yml
+  
+  tasks:
+    - name: Copy Wordpress Dockerfile to host
+      template:
+        src: templates/wordpress_dockerfile.j2
+        dest: "{{ wordpress_dir }}/Dockerfile"
+        mode: '0755'
+
+    - name: Build Wordpress
+      community.docker.docker_image:
+        build:
+          path: "{{ wordpress_dir }}"
+        name: wordpress_staging
+        state: present
+        source: build
+
+    - name: Run Wordpress
+      shell: docker run --hostname wordpress --name wordpress_staging --network staging_network -p 80:80 --detach wordpress_staging
+...
