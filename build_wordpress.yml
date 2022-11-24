@@ -2,13 +2,17 @@
 - name: Build Docker containers
   hosts: dev
   vars:
-    mariadb_dir: "/home/{{ ansible_user }}/mariadb"
-    mariadb_vol: "{{ mariadb_dir }}/database"
     wordpress_dir: "/home/{{ ansible_user }}/wordpress"
   vars_files:
     - secrets.yml
-  
+
   tasks:
+    - name: Create directory for Wordpress
+      file:
+        path: "{{ wordpress_dir }}"
+        state: directory
+        mode: '0755'
+
     - name: Copy Wordpress Dockerfile to host
       template:
         src: templates/wordpress_dockerfile.j2

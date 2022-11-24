@@ -4,7 +4,6 @@
   vars:
     mariadb_dir: "/home/{{ ansible_user }}/mariadb"
     mariadb_vol: "{{ mariadb_dir }}/database"
-    wordpress_dir: "/home/{{ ansible_user }}/wordpress"
   vars_files:
     - secrets.yml
   

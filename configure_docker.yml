@@ -17,7 +17,7 @@
       get_url:
         url: https://get.docker.com
         dest: /home/{{ ansible_user }}/get-docker.sh
-        mode: 0550
+        mode: '0550'
 
     - name: Install Docker
       script: /home/{{ ansible_user }}/get-docker.sh
@@ -41,4 +41,8 @@
 
     - name: Start Wordpress
       shell: docker start wordpress_staging
+
+    - name: Create a network
+      community.docker.docker_network:
+        name: staging_network
 ...
