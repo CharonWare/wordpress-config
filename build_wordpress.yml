@@ -26,6 +26,8 @@
         name: wordpress_staging
         state: present
         source: build
+        force_source: true
+        tag: "{{ tag | default('latest') }}"
 
     - name: Run Wordpress
       shell: docker run --hostname wordpress --name wordpress_staging --network staging_network -p 80:80 --detach wordpress_staging

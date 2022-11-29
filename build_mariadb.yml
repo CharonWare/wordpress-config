@@ -6,7 +6,7 @@
     mariadb_vol: "{{ mariadb_dir }}/database"
   vars_files:
     - secrets.yml
-  
+
   tasks:
     - name: Create directory for mariadb volume
       file:
@@ -27,7 +27,9 @@
         name: mariadb_staging
         state: present
         source: build
+        force_source: true
+        tag: "{{ tag | default('latest') }}"
 
     - name: Run MariaDB
-      shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol}}:/var/lib/mysql --detach mariadb_staging
+      shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol }}:/var/lib/mysql --detach mariadb_staging
 ...

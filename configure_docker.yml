@@ -7,7 +7,7 @@
   handlers:
     - name: Restart Dockerd
       become: true
-      service: 
+      service:
         name: docker
         state: restarted
 
@@ -27,22 +27,23 @@
 
     - name: Start Dockerd
       become: true
-      service: 
+      service:
         name: docker
         state: started
-    
+
     - name: Log into DockerHub
       community.docker.docker_login:
         username: "{{ docker_login }}"
         password: "{{ docker_access_token }}"
-    
+
     - name: Create a network
       community.docker.docker_network:
         name: staging_network
-    
+
     - name: Start MariaDB
       shell: docker start mariadb_staging
 
     - name: Start Wordpress
-      shell: docker start wordpress_staging
+      # shell: docker start wordpress_staging
+      shell: docker start dgiufhbdfb
 ...
