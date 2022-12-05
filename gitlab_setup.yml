@@ -3,15 +3,21 @@
   hosts: dev
   vars:
     gitlab_dir: "/home/{{ ansible_user }}/gitlab"
-  
+
   tasks:
    - name: Create gitlab dir
-     path: "{{ gitlab_dir }}"
-     state: directory
-     mode: '0755'
+     ansible.builtin.file:
+       path: "{{ gitlab_dir }}"
+       state: directory
+       mode: '0755'
 
    - name: Create gitlab sub-dirs
-     path: "{{ gitlab_dir }}/{{ new_dir }}"
-     with_nested:
-     - ['config', 'logs', 'data']
+     ansible.builtin.file:
+       path: "{{ gitlab_dir }}/{{ item }}"
+       mode: '0755'
+       state: directory
+     loop:
+       - config
+       - logs
+       - data
 ...

@@ -1,12 +1,14 @@
 ---
 - name: Build base container image from Dockerfile
+  hosts: dev
+  gather_facts: false
   vars:
     gitlab_dir: "/home/{{ ansible_user }}/gitlab"
   tasks:
 
    - name: Copy gitlab Dockerfile to hosts
-     template:
-       src: templates/gitlab_docker.j2
+     ansible.builtin.template:
+       src: templates/gitlab_dockerfile.j2
        dest: "{{ gitlab_dir }}/Dockerfile"
        mode: '0755'
 
@@ -14,6 +16,7 @@
      community.docker.docker_image:
        build:
          path: "{{ gitlab_dir }}"
+       name: gitlab
        state: present
        source: build
        force_source: true
@@ -21,12 +24,14 @@
 
    - name: Run gitlab
      shell: docker run --detach \
-            --hostname gitlab.example.com \
+            --hostname http://192.168.0.100 \
             --name gitlab \
-            --publish 8080:80 --publish 22:22 \
+            --publish 8080:80 --publish 2222:22 \
             --restart always \
             --volume {{ gitlab_dir }}/config:/etc/gitlab \
             --volume {{ gitlab_dir }}/logs:/var/log/gitlab \
             --volume {{ gitlab_dir }}/data:/var/opt/gitlab \
-            --sgm-size 256m \
+            --shm-size 256m \
             --network staging_network
+            gitlab
+...
