@@ -9,13 +9,13 @@
 
   tasks:
     - name: Create directory for mariadb volume
-      file:
+      ansible.builtin.file:
         path: "{{ mariadb_vol }}"
         state: directory
         mode: '0755'
 
     - name: Copy MariaDB Dockerfile to host
-      template:
+      ansible.builtin.template:
         src: templates/mariadb_dockerfile.j2
         dest: "{{ mariadb_dir }}/Dockerfile"
         mode: '0755'
@@ -31,5 +31,5 @@
         tag: "{{ tag | default('latest') }}"
 
     - name: Run MariaDB
-      shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol }}:/var/lib/mysql --detach mariadb_staging
+      ansible.builtin.shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol }}:/var/lib/mysql --detach mariadb_staging
 ...

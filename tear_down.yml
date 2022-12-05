@@ -4,6 +4,7 @@
   vars:
     db: mariad_staging
     web: wordpress_staging
+    gitlab: gitlab_staging
 
   tasks:
     - name: Remove wordpress
@@ -15,4 +16,9 @@
       community.docker.docker_image:
         state: absent
         name: "{{ db }}"
+
+    - name: Remove gitlab
+      community.docker.docker_image:
+        state: absent
+        name: "{{ gitlab }}"
 ...

@@ -7,27 +7,27 @@
   handlers:
     - name: Restart Dockerd
       become: true
-      service:
+      ansible.builtin.service:
         name: docker
         state: restarted
 
   tasks:
     - name: Download the Docker files
     # Due to the target machine being a raspberry pi we will let Docker handle the install
-      get_url:
+      ansible.builtin.get_url:
         url: https://get.docker.com
         dest: /home/{{ ansible_user }}/get-docker.sh
         mode: '0550'
 
     - name: Install Docker
-      script: /home/{{ ansible_user }}/get-docker.sh
+      ansible.builtin.script: /home/{{ ansible_user }}/get-docker.sh
       args:
         creates: /usr/bin/docker
       notify: Start Dockerd
 
     - name: Start Dockerd
       become: true
-      service:
+      ansible.builtin.service:
         name: docker
         state: started
 
@@ -41,8 +41,8 @@
         name: staging_network
 
     - name: Start MariaDB
-      shell: docker start mariadb_staging
+      ansible.builtin.shell: docker start mariadb_staging
 
     - name: Start Wordpress
-      shell: docker start wordpress_staging
+      ansible.builtin.shell: docker start wordpress_staging
 ...
