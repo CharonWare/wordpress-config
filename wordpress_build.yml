@@ -38,5 +38,6 @@
         published_ports:
           - 80:80
         restart_policy: on-failure
+        image: wordpress_staging
         state: started
 ...

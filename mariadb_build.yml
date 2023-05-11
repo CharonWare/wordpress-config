@@ -37,11 +37,12 @@
         networks:
           - name: staging_network
         published_ports:
-          - 3306:3306
+          - 3306
         mounts:
-          - target: /var/lib/mysql
           - source: "{{ mariadb_vol }}"
-          - consistency: consistent
+            target: /var/lib/mysql
+            type: bind
         restart_policy: on-failure
+        image: mariadb_staging
         state: started
 ...

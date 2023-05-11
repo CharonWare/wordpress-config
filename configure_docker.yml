@@ -19,6 +19,7 @@
         dest: /home/{{ ansible_user }}/get-docker.sh
         mode: '0550'
 
+
     - name: Install Docker
       ansible.builtin.script: /home/{{ ansible_user }}/get-docker.sh
       args:
