@@ -31,5 +31,17 @@
         tag: "{{ tag | default('latest') }}"
 
     - name: Run MariaDB
-      ansible.builtin.shell: docker run --hostname mariadb --name mariadb_staging --network staging_network -p 3306 -v {{ mariadb_vol }}:/var/lib/mysql --detach mariadb_staging
+      community.docker.docker_container:
+        hostname: mariadb
+        name: mariadb_staging
+        networks:
+          - name: staging_network
+        published_ports:
+          - 3306:3306
+        mounts:
+          - target: /var/lib/mysql
+          - source: "{{ mariadb_vol }}"
+          - consistency: consistent
+        restart_policy: on-failure
+        state: started
 ...

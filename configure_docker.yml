@@ -39,10 +39,4 @@
     - name: Create a network
       community.docker.docker_network:
         name: staging_network
-
-    - name: Start MariaDB
-      ansible.builtin.shell: docker start mariadb_staging
-
-    - name: Start Wordpress
-      ansible.builtin.shell: docker start wordpress_staging
 ...

@@ -1,7 +1,13 @@
 [dev]
 pi
 
+[test]
+charonware
+
 [dev:vars]
 ansible_user = pi
 ansible_private_key_file = /home/conor/.ssh/id_rsa
 
+[test:vars]
+ansible_user = charon
+ansible_private_key_file = /home/conor/.ssh/id_rsa
