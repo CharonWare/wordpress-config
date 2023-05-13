@@ -7,6 +7,12 @@
   vars_files:
     - secrets.yml
 
+  handlers:
+    - name: Stop running container
+      community.docker.docker_container:
+        image: mariadb_staging
+        state: stopped
+
   tasks:
     - name: Create directory for mariadb volume
       ansible.builtin.file:
@@ -21,6 +27,7 @@
         mode: '0755'
 
     - name: Build Mariadb
+      become: true
       community.docker.docker_image:
         build:
           path: "{{ mariadb_dir }}"
@@ -29,6 +36,7 @@
         source: build
         force_source: true
         tag: "{{ tag | default('latest') }}"
+      notify: Stop running container
 
     - name: Run MariaDB
       community.docker.docker_container:
