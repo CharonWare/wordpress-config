@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  
+  nginx:
+    build: nginx/.
+    ports:
+      - target: 80
+        published: 80
+    networks:
+      - staging_network
+    image: nginx:1.23.4
+  
+  wordpress:
+    build: wordpress/.
+    env_file: wordpress/.env
+    command: apache2ctl -D FOREGROUND
+    ports:
+      - target: 80
+        published: 8080
+    networks:
+      - staging_network
+    image: wordpress:6.2.0-apache
+
+  mariadb:
+    build: mariadb/.
+    env_file: mariadb/.env
+    ports: 
+      - 3306
+    networks:
+      - staging_network
+    volumes:
+      - mariadb_vol:/var/lib/mysql
+    image: mariadb:10.11.3
+
+networks:
+  staging_network:
+
+volumes:
+  mariadb_vol:
+
+

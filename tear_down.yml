@@ -7,6 +7,17 @@
     gitlab: gitlab_staging
 
   tasks:
+
+    - name: Stop wordpress
+      community.docker.docker_container:
+        state: absent
+        name: "{{ web }}"
+
+    - name: Stop mariadb
+      community.docker.docker_container:
+        state: absent
+        name: "{{ db }}"
+
     - name: Remove wordpress
       community.docker.docker_image:
         state: absent

@@ -1,0 +1,65 @@
+---
+- name: Build stack on docker compose
+  hosts: dev
+  vars:
+    env_path: "/home/{{ ansible_user }}/wordpress"
+    mariadb_dir: "{{ env_path }}/mariadb"
+    nginx_dir: "{{ env_path }}/nginx"
+    wordpress_dir: "{{ env_path }}/wordpress"
+  vars_files:
+    - secrets.yml
+
+  tasks:
+
+    - name: Create environment directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - { path: "{{ mariadb_dir }}"}
+        - { path: "{{ nginx_dir }}"}
+        - { path: "{{ wordpress_dir }}"}
+
+#    - name: Copy nginx env file to host
+#      ansible.builtin.template:
+#        src: templates/nginx.env.j2
+#        dest: "{{ nginx_dir }}/.env"
+#        mode: '0755'
+
+    - name: Copy nginx Dockerfile to host
+      ansible.builtin.template:
+        src: templates/nginx_dockerfile.j2
+        dest: "{{ nginx_dir }}/Dockerfile"
+        mode: '0755'
+
+    - name: Copy mariadb env file to host
+      ansible.builtin.template:
+        src: templates/mariadb.env.j2
+        dest: "{{ mariadb_dir }}/.env"
+        mode: '0755'
+
+    - name: Copy MariaDB Dockerfile to host
+      ansible.builtin.template:
+        src: templates/mariadb_dockerfile.j2
+        dest: "{{ mariadb_dir }}/Dockerfile"
+        mode: '0755'
+
+    - name: Copy Wordpress env to host
+      ansible.builtin.template:
+        src: templates/wordpress.env.j2
+        dest: "{{ wordpress_dir }}/.env"
+        mode: '0755'
+
+    - name: Copy Wordpress Dockerfile to host
+      ansible.builtin.template:
+        src: templates/wordpress_dockerfile.j2
+        dest: "{{ wordpress_dir }}/Dockerfile"
+        mode: '0755'
+
+    - name: Copy docker compose file to host
+      ansible.builtin.copy:
+        src: docker-compose.yml
+        dest: "{{ env_path }}"
+        mode: '0755'
+...
